@@ -3,6 +3,8 @@
 
 #include <algorithm>
 
+#include <chrono>
+#include <iostream>
 #include <locale.h>
 #include <stdint.h>
 #include <stdio.h>
@@ -1186,7 +1188,8 @@ Settings defaults()
 template <typename T>
 T clamp(T v, T min, T max)
 {
-	return v < min ? min : v > max ? max : v;
+	return v < min ? min : v > max ? max
+	                               : v;
 }
 
 unsigned int textureMask(const char* arg)
@@ -1219,6 +1222,22 @@ int main(int argc, char** argv)
 #ifndef __wasi__
 	setlocale(LC_ALL, "C"); // disable locale specific convention for number parsing/printing
 #endif
+
+	struct Timer
+	{
+		std::chrono::high_resolution_clock::time_point start = std::chrono::high_resolution_clock::now();
+		Timer()
+		{
+		}
+
+		~Timer()
+		{
+			std::chrono::high_resolution_clock::time_point end = std::chrono::high_resolution_clock::now();
+			std::chrono::duration<double> duration = end - start;
+			std::cout << "Compress time: " << duration.count() << " seconds" << std::endl;
+		}
+	};
+	Timer timer;
 
 	meshopt_encodeVertexVersion(0);
 	meshopt_encodeIndexVersion(1);
