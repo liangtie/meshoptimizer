@@ -52,15 +52,32 @@
 			}
 		},
 		{
-			"name": "linux-release",
-			"displayName": "linux Release",
+			"name": "linux-base",
 			"description": "Build for linux",
 			"generator": "Ninja",
+			"hidden": true,
 			"binaryDir": "${sourceDir}/build/linux",
 			"cacheVariables": {
 				"CMAKE_BUILD_TYPE": "Release",
-				"CMAKE_INSTALL_PREFIX": "/usr",
 				"MESHOPT_BUILD_GLTFPACK": "ON"
+			}
+		},
+		{
+			"name": "linux-release",
+			"displayName": "linux Release",
+			"description": "Build for linux",
+			"inherits": "linux-base",
+			"cacheVariables": {
+				"CMAKE_INSTALL_PREFIX": "/usr"
+			}
+		},
+		{
+			"name": "docker-release",
+			"displayName": "docker Release",
+			"description": "Build for docker",
+			"inherits": "linux-base",
+			"cacheVariables": {
+				"CMAKE_INSTALL_PREFIX": "/usr/installtemp"
 			}
 		}
 	]
